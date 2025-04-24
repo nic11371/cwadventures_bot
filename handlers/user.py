@@ -6,6 +6,7 @@ from aiogram.filters import CommandStart, Command
 from aiogram.enums import ParseMode, ChatAction
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
+from database.requests import set_user
 
 
 user = Router()
@@ -21,6 +22,7 @@ class Test(StatesGroup):
 async def start(message: Message, state: FSMContext):
     image_url = "https://disk.yandex.ru/i/A-H0qAgBSF5e3Q"
     text = f"<i>Я рад Вас приветствовать в моем канале</i>"
+    await set_user(message.from_user.id)
     await message.bot.send_chat_action(
         chat_id=message.from_user.id, action=ChatAction.UPLOAD_PHOTO)
     await message.answer_photo(
