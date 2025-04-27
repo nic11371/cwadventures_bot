@@ -15,11 +15,10 @@ class Admin(Filter):
     def __init__(self):
         self.admin_id = ADMIN_ID
 
+    async def __call__(self, message: Message):
+        return message.from_user.id == self.admin_id
 
-async def __call__(self, message: Message):
-    return message.from_user.id == self.admin_id
 
-
-@admin.message(Admin, Command('apanel'))
+@admin.message(Admin(), Command('apanel'))
 async def apanel(message: Message):
     await message.answer('Это панель администратора')

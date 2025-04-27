@@ -17,6 +17,17 @@ class User(Base):
     __tablename__ = 'users'
     id: Mapped[int] = mapped_column(primary_key=True)
     tg_id = mapped_column(BigInteger)
+    address: Mapped[str] = mapped_column(nullable=True)
+    comment: Mapped[str] = mapped_column(nullable=True)
+    number: Mapped[str] = mapped_column(nullable=True)
+    content_id: Mapped[str] = mapped_column(nullable=True)
+
+
+class Content(Base):
+    __tablename__ = 'contents'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    content_id: Mapped[str] = mapped_column(nullable=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
 
 
 async def async_main():
