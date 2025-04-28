@@ -1,11 +1,11 @@
 import os
 import dotenv
-from aiogram import Router, Bot, F
 from aiogram.types import Message, LabeledPrice, PreCheckoutQuery
+from keyboards.userkb import keyboards
+from aiogram import Router, Bot, F
 from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-# from aiogram import BaseMiddleware
 # from typing import Callable, Dict, Any, Awaitable
 from database.requests import set_user, save_info_user, save_content_user
 from static import commands
@@ -24,21 +24,13 @@ class Test(StatesGroup):
     number = State()
 
 
-# class LoggingMiddleware(BaseMiddleware):
-#     async def __call__(self, handler:
-#         Callable[[Message, Dict[str, Any]],
-#         Awaitable[Any]], event: Message, data: Dict[
-#             str, Any]) -> Any:
-#                     print(f"Юзер {event.from_user.id} сообщение: {event.text}")
-#                     result = await handler(event, data)
-#                     return result
-
-
 @user.message(CommandStart())
 async def start(message: Message, bot: Bot):
     await bot.set_my_commands(commands=commands)
-
-    await message.answer('Добро пожаловать на мой канал')
+    await message.answer(
+        "Выберите действие:",
+        reply_markup=keyboards().as_markup(resize_keyboard=True),
+    )
 
 
 @user.message(Command('order'))
@@ -84,14 +76,20 @@ async def any_content_handler(message: Message):
     await message.answer("Контент от пользователя сохранен")
 
 
-@user.message()
-async def download_content(message: Message, bot: Bot):
-    tg_id = message.from_user.id
-    file_id = message.photo[-1].file_id #возможно неправильно. надо проверить
-    file = await bot.get_file(file_id)
-    file_path = file.file_path
-    my_path = f"files/{file_path}"
-    await bot.download_file(file_path=file_path, destination=my_path)
+# @user.message(F.photo)
+# async def download_photo(message: Message):
+#     await message.bot.download(
+#         message.photo[-1], destination=f"{message.photo[-1].file_id}.jpg")
+
+
+# @user.message()
+# async def download_content(message: Message, bot: Bot):
+#     tg_id = message.from_user.id
+#     file_id = message.photo[-1].file_id #возможно неправильно. надо проверить
+#     file = await bot.get_file(file_id)
+#     file_path = file.file_path
+#     my_path = f"files/{file_path}"
+#     await bot.download_file(file_path=file_path, destination=my_path)
 
 
 @user.message(Command('subscribe'))
