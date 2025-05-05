@@ -23,17 +23,13 @@ class Test(StatesGroup):
     number = State()
 
 
-# @user.message(CommandStart())
-# async def start(message: Message, bot: Bot):
-#     await bot.set_my_commands(commands=commands)
-#     await message.answer(
-#         "Выберите действие:",
-#         reply_markup=keyboards().as_markup(resize_keyboard=True),
-#     )
-
 @user.message(CommandStart())
-async def command_start_handler(message: Message) -> None:
-    await message.answer(f"Привет, <b>{message.from_user.full_name}</b>! Как дела?")
+async def start(message: Message, bot: Bot):
+    await bot.set_my_commands(commands=commands)
+    await message.answer(
+        "Выберите действие:",
+        reply_markup=keyboards().as_markup(resize_keyboard=True),
+    )
 
 
 @user.message(Command('order'))
