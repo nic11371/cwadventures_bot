@@ -13,7 +13,7 @@ load_dotenv()
 
 
 async def main():
-    bot = Bot(token=os.getenv("TOKEN"))
+    bot = Bot(token=os.getenv("BOT_TOKEN"))
     dp = Dispatcher()
     dp.include_routers(user, creator, admin)
     dp.update.middleware(AntiSpamMiddleware(limit=2, interval=1))

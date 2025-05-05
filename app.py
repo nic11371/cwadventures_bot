@@ -10,6 +10,7 @@ import logging
 from aiogram.types import BotCommand, BotCommandScopeDefault
 from aiohttp import web
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
+from middlewares import AntiSpamMiddleware
 
 
 load_dotenv()
@@ -24,21 +25,22 @@ WEBHOOK_PATH = f'/{BOT_TOKEN}'
 BASE_URL = os.getenv("BASE_URL")
 
 # инициализируем бота и диспетчера для работы с ним
-bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
+# dp.update.middleware(AntiSpamMiddleware(limit=2, interval=1))
 
 
-async def set_commands():
-    # Создаем список команд, которые будут доступны пользователям
-    commands = [BotCommand(command='start', description='Старт')]
-    # Устанавливаем эти команды как дефолтные для всех пользователей
-    await bot.set_my_commands(commands, BotCommandScopeDefault())
+# async def set_commands():
+#     # Создаем список команд, которые будут доступны пользователям
+#     commands = [BotCommand(command='start', description='Старт')]
+#     # Устанавливаем эти команды как дефолтные для всех пользователей
+#     await bot.set_my_commands(commands, BotCommandScopeDefault())
 
 
 # Функция, которая будет вызвана при запуске бота
 async def on_startup() -> None:
     # Устанавливаем командное меню
-    await set_commands()
+    # await set_commands()
     # Устанавливаем вебхук для приема сообщений через заданный URL
     await bot.set_webhook(f"{BASE_URL}{WEBHOOK_PATH}")
     # Отправляем сообщение администратору о том, что бот был запущен

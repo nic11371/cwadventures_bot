@@ -15,7 +15,7 @@ webhook_delete:
 	curl --request POST --url "<https://api.telegram.org/bot$(TOKEN)/deleteWebhook>"
 
 webhook_create:
-	curl -X POST --url "<https://api.telegram.org/bot$(TOKEN)/setWebhook>" -d "url=$(SERVERLESS_APIGW_URL)"
+	curl -X POST "https://api.telegram.org/bot7745119429:AAGiqIfVJbNhkTxdWlFD88bRtWSuxJ0dKIM/setWebhook" -d "url=https://d5dfccgq8optbv9utfbt.3zvepvee.apigw.yandexcloud.net"
 
 build: webhook_create
 	docker build -t cr.yandex/$(YC_IMAGE_REGISTRY_ID)/$(SERVERLESS_CONTAINER_NAME) .
